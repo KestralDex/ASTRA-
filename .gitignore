@@ -1,0 +1,37 @@
+# Environments
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# Secrets — never commit real credentials
+.env
+
+# Data — raw/interim/processed data files are large and often not meant
+# for git; the folder structure is kept via .gitkeep, the contents are not.
+data/raw/*
+data/interim/*
+data/processed/*
+data/external/*
+!data/raw/.gitkeep
+!data/interim/.gitkeep
+!data/processed/.gitkeep
+!data/external/.gitkeep
+
+# Generated artifacts
+models/*
+!models/.gitkeep
+artifacts/figures/*
+!artifacts/figures/.gitkeep
+artifacts/metrics/*
+!artifacts/metrics/.gitkeep
+logs/*.log
+!logs/.gitkeep
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS/editor cruft
+.DS_Store
+.vscode/
+.idea/
