@@ -9,11 +9,8 @@ import / project modules import / tests execute" means concretely.
 
 from pathlib import Path
 
-<<<<<<< HEAD
 import pytest
 
-=======
->>>>>>> origin/main
 from src.utils.config import load_config, resolve_path
 from src.utils.logger import get_logger
 from src.utils.exceptions import AstraError, ConfigError, DataValidationError
@@ -43,7 +40,6 @@ def test_logger_returns_logger():
     assert logger is not None
 
 
-<<<<<<< HEAD
 def test_logger_actually_writes_to_log_file():
     """
     The earlier test only checked that logging didn't raise — it never
@@ -111,8 +107,6 @@ def test_config_rejects_missing_required_section(tmp_path):
         load_config(config_path=incomplete_config)
 
 
-=======
->>>>>>> origin/main
 def test_exceptions_are_importable_and_related():
     """Custom exceptions exist and inherit from AstraError as intended,
     so `except AstraError` will catch ConfigError/DataValidationError too."""

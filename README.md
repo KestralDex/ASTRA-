@@ -61,4 +61,3 @@ Each milestone is developed separately, tested, reviewed, and only then treated 
 ## Safety and scope
 
 ASTRA is a decision-support system. Recommendations produced by later AI components will require human review and will not directly execute procurement, routing, payments, permissions, or other real-world actions.
->>>>>>> origin/main
