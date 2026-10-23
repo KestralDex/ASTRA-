@@ -19,7 +19,6 @@ USAGE
 from pathlib import Path
 import yaml
 
-from src.utils.exceptions import ConfigError
 
 # PROJECT_ROOT resolves to the astra/ folder regardless of which
 # directory the script was launched from. __file__ is this file's own
@@ -27,12 +26,6 @@ from src.utils.exceptions import ConfigError
 # -> src -> astra/ (project root).
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 DEFAULT_CONFIG_PATH = PROJECT_ROOT / "config" / "settings.yaml"
-
-# Top-level sections every part of ASTRA is allowed to assume exist.
-# If a new section becomes load-bearing for some module, add it here so
-# a missing/renamed section fails loudly at load time instead of as a
-# confusing KeyError deep inside unrelated code later.
-REQUIRED_SECTIONS = ["project", "paths", "logging", "random_seed"]
 
 
 def load_config(config_path: Path = DEFAULT_CONFIG_PATH) -> dict:
@@ -43,11 +36,18 @@ def load_config(config_path: Path = DEFAULT_CONFIG_PATH) -> dict:
             project's config/settings.yaml, overridable for tests).
     OUTPUT: dict matching the YAML structure, e.g. config["paths"]["models"].
 
+<<<<<<< HEAD
     Raises FileNotFoundError if the file is missing, or ConfigError if it
     exists but is empty, malformed, not a mapping, or missing a section
     every module is allowed to assume exists (REQUIRED_SECTIONS) — this is
     what "avoid silent exception swallowing" means in practice: we don't
     let a bad config file surface as a cryptic error three modules away.
+=======
+    Raises FileNotFoundError with a clear message if the file is missing,
+    rather than letting a cryptic yaml/OS error surface — this is what
+    "avoid silent exception swallowing" means in practice: we don't hide
+    the error, we make it clearer.
+>>>>>>> origin/main
     """
     if not config_path.exists():
         raise FileNotFoundError(
@@ -57,6 +57,7 @@ def load_config(config_path: Path = DEFAULT_CONFIG_PATH) -> dict:
         )
 
     with open(config_path, "r", encoding="utf-8") as f:
+<<<<<<< HEAD
         raw_text = f.read()
 
     try:
@@ -87,6 +88,9 @@ def load_config(config_path: Path = DEFAULT_CONFIG_PATH) -> dict:
             f"Config file at {config_path} is missing required "
             f"section(s): {missing}."
         )
+=======
+        config = yaml.safe_load(f)
+>>>>>>> origin/main
 
     return config
 

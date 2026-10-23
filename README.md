@@ -1,95 +1,64 @@
 # ASTRA
 **Autonomous Supply Chain Transformation, Resilience & Adaptive Intelligence Platform**
 
-Final-year B.E. AIML major project. ASTRA is a **decision-support research
-prototype** — it detects supply-chain risk signals, analyzes them,
-explains them, simulates what-if scenarios, and recommends mitigations.
+ASTRA is our final-year B.E. AIML major project. It is being built as a research decision-support prototype for supply-chain intelligence: detecting risk signals, analysing them, supporting what-if scenarios, and later producing evidence-grounded recommendations for human review.
+
 It does **not** autonomously place orders or modify enterprise systems.
 
-Built incrementally, one milestone at a time, with each milestone
-executed, tested, and approved before the next begins.
+## Current progress
 
-## Project status
+- **Milestone 0 — Foundation:** complete
+- **Milestone 1 — DataCo ingestion and validation:** complete
+- **Milestone 2 — Exploratory data analysis:** complete
+- **Milestone 3 — Operational / delivery risk intelligence:** current
 
-**Milestone 0 (Foundation) — complete.**
-Milestones 1–16 are not yet started. See `docs/milestones.md` (added as
-milestones progress) for the full plan.
+The first three milestones establish the project structure, validate the real DataCo dataset, define the prediction contract, check privacy and target leakage, and explore which order-time variables are useful for delivery-risk modelling.
 
-## Setup
+## ASTRA architecture
 
-Requires Python 3.11+ (developed and tested on 3.12).
+The project is being developed toward the architecture proposed in our synopsis and presentation:
 
-```bash
-python3 -m venv .venv
-source .venv/bin/activate      # Windows: .venv\Scripts\activate
+- DataCo → Operational / Delivery Risk Intelligence
+- M5 → Demand Intelligence
+- External context → Disruption Intelligence
+- RAG → Evidence / Knowledge Layer
+- Specialized agents → Multi-Agent Decision Layer
+- Scenario Simulator → What-if resilience analysis
+- Security & Governance → protection, traceability and human review
+- Dashboard → ASTRA Command Center
+
+Supplier-specific intelligence remains data-dependent and will not be fabricated if the available public datasets cannot support it.
+
+## Local setup
+
+Python 3.11+ is recommended. Development so far has used Python 3.12.
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
-```
-
-Copy `.env.example` to `.env` and fill in API keys **when they're
-needed** (not required until Milestone 7+). Never commit `.env`.
-
-## Verify the setup
-
-```bash
 python -m pytest tests/ -v
 ```
 
-All tests should pass. This confirms the package imports, config loads,
-logging works, and the expected folder structure exists — it does not
-yet test any ASTRA-specific logic, because none exists yet.
+The Milestone 2 review confirmed **36/36 tests passing**.
 
-## Project structure
+## Data
 
-```
-astra/
-├── config/settings.yaml      # central config (paths, logging, random seed)
-├── data/                     # raw / interim / processed / external — see below
-├── notebooks/                # exploration notebooks, added from Milestone 1 on
-├── src/
-│   ├── utils/                # config loader, logger, custom exceptions
-│   ├── data/                 # loaders, validation, preprocessing (Milestone 1+)
-│   ├── features/             # feature engineering (Milestone 3+)
-│   ├── forecasting/          # demand forecasting (Milestone 5+)
-│   ├── risk/                 # risk classification (Milestone 3+)
-│   ├── context/               # external APIs — weather, news (Milestone 7+)
-│   ├── rag/                  # retrieval layer (Milestone 8+)
-│   ├── agents/                # specialized LLM agents (Milestone 10+)
-│   └── simulation/           # scenario simulator (Milestone 11+)
-├── models/                    # trained model artifacts (git-ignored)
-├── artifacts/{figures,metrics,reports}/  # generated outputs (git-ignored)
-├── dashboard/                 # Streamlit app (Milestone 12+)
-├── tests/                     # pytest suite
-├── logs/                      # runtime logs (git-ignored)
-└── docs/                      # error log, data notes, viva material
-```
+Large raw datasets are intentionally not committed to GitHub.
 
-`src/data`, `src/features`, `src/forecasting`, `src/risk`, `src/context`,
-`src/rag`, `src/agents`, and `src/simulation` are currently empty
-(package placeholders only) — they're populated milestone by milestone,
-not all at once.
+Expected locally:
 
-## Datasets
+- `DataCoSupplyChainDataset.csv`
+- `DescriptionDataCoSupplyChain.csv`
+- M5 dataset later in the demand-intelligence milestone
 
-- **DataCoSupplyChainDataset.csv** — primary dataset, used starting
-  Milestone 1 (risk/delivery classification).
-- **DescriptionDataCoSupplyChain.csv** — supporting data dictionary for
-  the above; used alongside it in Milestone 1, but not assumed accurate
-  without checking against the real schema.
-- **M5 Forecasting dataset** — to be supplied later, used starting
-  Milestone 4 (demand forecasting).
-- **tokenized_access_logs.csv** — supplied alongside the DataCo files,
-  but **out of scope for now**. Not deleted, not loaded, not part of
-  the current architecture. Would only be incorporated later if a
-  technically justified ASTRA use case for it is identified.
+`tokenized_access_logs.csv` remains out of scope.
 
-## Technology (Stage 1)
+## Development approach
 
-Python, pandas, NumPy, scikit-learn, matplotlib, Plotly, Jupyter,
-Streamlit, SQLite (later), Git. See `requirements.txt` for pinned
-versions. Later-stage technologies (FastAPI, PostgreSQL, an LLM API,
-FAISS/Chroma, a single lightweight orchestration mechanism) are
-introduced only in the milestone that needs them — see the synopsis's
-"Technology Principles" for what's explicitly excluded at this stage
-(Neo4j, Docker, Kubernetes, Redis, Kafka, multiple agent frameworks,
-multiple vector databases) unless a later milestone demonstrates an
-actual need.
+Each milestone is developed separately, tested, reviewed, and only then treated as stable project progress. We keep leakage checks, privacy, reproducibility, and explainability as part of the implementation rather than adding them only at the end.
+
+## Safety and scope
+
+ASTRA is a decision-support system. Recommendations produced by later AI components will require human review and will not directly execute procurement, routing, payments, permissions, or other real-world actions.
+>>>>>>> origin/main
