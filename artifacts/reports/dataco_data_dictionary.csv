@@ -1,0 +1,54 @@
+column_name,pandas_dtype,description_from_supplied_dictionary,example_non_sensitive_value_or_summary,missing_count,missing_percentage,unique_count,provisional_role,notes
+Type,object,Type of transaction made,DEBIT,0,0.0,4,CATEGORICAL,
+Days for shipping (real),int64,Actual shipping days of the purchased product,range 0 to 6,0,0.0,7,NUMERIC,POST-OUTCOME: only known after delivery — leakage risk as a predictive feature
+Days for shipment (scheduled),int64,Days of scheduled delivery of the purchased product,range 0 to 4,0,0.0,4,NUMERIC,
+Benefit per order,float64,Earnings per order placed,range -4274.97998 to 911.7999878,0,0.0,21998,NUMERIC,
+Sales per customer,float64,Total sales per customer made per customer,range 7.489999771 to 1939.98999,0,0.0,2927,NUMERIC,
+Delivery Status,object,"Delivery status of orders: Advance shipping , Late delivery , Shipping canceled , Shipping on time",Advance shipping,0,0.0,4,POSSIBLE_TARGET,POST-OUTCOME: only known after delivery — leakage risk as a predictive feature
+Late_delivery_risk,int64,"Categorical variable that indicates if sending is late (1), it is not late (0).",0,0,0.0,2,POSSIBLE_TARGET,POST-OUTCOME: only known after delivery — leakage risk as a predictive feature
+Category Id,int64,Product category code,73,0,0.0,51,IDENTIFIER,
+Category Name,object,Description of the product category,Sporting Goods,0,0.0,50,CATEGORICAL,
+Customer City,object,City where the customer made the purchase,Caguas,0,0.0,563,CATEGORICAL,
+Customer Country,object,Country where the customer made the purchase,Puerto Rico,0,0.0,2,CATEGORICAL,
+Customer Email,object,Customer's email,[withheld — see privacy notes],0,0.0,1,UNKNOWN,CONSTANT: constant placeholder 'XXXXXXXXX' in every row (pre-masked)
+Customer Fname,object,Customer name,[withheld — see privacy notes],0,0.0,782,CATEGORICAL,
+Customer Id,int64,Customer ID,20755,0,0.0,20652,IDENTIFIER,
+Customer Lname,object,Customer lastname,[withheld — see privacy notes],8,0.004,1109,CATEGORICAL,
+Customer Password,object,Masked customer key,[withheld — see privacy notes],0,0.0,1,UNKNOWN,CONSTANT: constant placeholder 'XXXXXXXXX' in every row (pre-masked)
+Customer Segment,object,"Types of Customers: Consumer , Corporate , Home Office",Consumer,0,0.0,3,CATEGORICAL,
+Customer State,object,State to which the store where the purchase is registered belongs,PR,0,0.0,46,CATEGORICAL,
+Customer Street,object,Street to which the store where the purchase is registered belongs,[withheld — see privacy notes],0,0.0,7458,CATEGORICAL,
+Customer Zipcode,float64,Customer Zipcode,725.0,3,0.002,995,IDENTIFIER,
+Department Id,int64,Department code of store,2,0,0.0,11,IDENTIFIER,
+Department Name,object,Department name of store,Fitness,0,0.0,11,CATEGORICAL,
+Latitude,float64,Latitude corresponding to location of store,range -33.93755341 to 48.78193283,0,0.0,11250,NUMERIC,
+Longitude,float64,Longitude corresponding to location of store,range -158.0259857 to 115.2630768,0,0.0,4487,NUMERIC,
+Market,object,"Market to where the order is delivered : Africa , Europe , LATAM , Pacific Asia , USCA",Pacific Asia,0,0.0,5,CATEGORICAL,
+Order City,object,Destination city of the order,Bekasi,0,0.0,3597,CATEGORICAL,
+Order Country,object,Destination country of the order,Indonesia,0,0.0,164,CATEGORICAL,
+Order Customer Id,int64,Customer order code,20755,0,0.0,20652,IDENTIFIER,DUPLICATE: identical to Customer Id in every row
+order date (DateOrders),object,Date on which the order is made,1/31/2018 22:56,0,0.0,65752,DATETIME,
+Order Id,int64,Order code,77202,0,0.0,65752,IDENTIFIER,
+Order Item Cardprod Id,int64,Product code generated through the RFID reader,1360,0,0.0,118,IDENTIFIER,DUPLICATE: identical to Product Card Id in every row
+Order Item Discount,float64,Order item discount value,range 0.0 to 500.0,0,0.0,1017,NUMERIC,
+Order Item Discount Rate,float64,Order item discount percentage,range 0.0 to 0.25,0,0.0,18,NUMERIC,
+Order Item Id,int64,Order item code,180517,0,0.0,180519,IDENTIFIER,
+Order Item Product Price,float64,Price of products without discount,range 9.989999771 to 1999.98999,0,0.0,75,NUMERIC,
+Order Item Profit Ratio,float64,Order Item Profit Ratio,range -2.75 to 0.5,0,0.0,162,NUMERIC,
+Order Item Quantity,int64,Number of products per order,range 1 to 5,0,0.0,5,NUMERIC,
+Sales,float64,Value in sales,range 9.989999771 to 1999.98999,0,0.0,193,NUMERIC,
+Order Item Total,float64,Total amount per order,range 7.489999771 to 1939.98999,0,0.0,2927,NUMERIC,
+Order Profit Per Order,float64,Order Profit Per Order,range -4274.97998 to 911.7999878,0,0.0,21998,NUMERIC,
+Order Region,object,"Region of the world where the order is delivered :  Southeast Asia ,South Asia ,Oceania ,Eastern Asia, West Asia , West of USA , US Center , West Africa, Central Africa ,North Africa ,Western Europe ,Northern , Caribbean , South America ,East Africa ,Southern Europe , East of USA ,Canada ,Southern Africa , Central Asia ,  Europe , Central America, Eastern Europe , South of  USA",Southeast Asia,0,0.0,23,CATEGORICAL,
+Order State,object,State of the region where the order is delivered,Java Occidental,0,0.0,1089,CATEGORICAL,
+Order Status,object,"Order Status : COMPLETE , PENDING , CLOSED , PENDING_PAYMENT ,CANCELED , PROCESSING ,SUSPECTED_FRAUD ,ON_HOLD ,PAYMENT_REVIEW",COMPLETE,0,0.0,9,CATEGORICAL,
+Order Zipcode,float64,NOT DOCUMENTED IN SUPPLIED DICTIONARY,99301.0,155679,86.24,609,IDENTIFIER,Not present in supplied data dictionary
+Product Card Id,int64,Product code,1360,0,0.0,118,IDENTIFIER,
+Product Category Id,int64,Product category code,73,0,0.0,51,IDENTIFIER,DUPLICATE: identical to Category Id in every row
+Product Description,float64,Product Description,n/a,180519,100.0,0,UNKNOWN,100% missing — no observed values
+Product Image,object,Link of visit and purchase of the product,http://images.acmesports.sports/Smart+watch ,0,0.0,118,CATEGORICAL,
+Product Name,object,Product Name,Smart watch ,0,0.0,118,CATEGORICAL,
+Product Price,float64,Product Price,range 9.989999771 to 1999.98999,0,0.0,75,NUMERIC,
+Product Status,int64,"Status of the product stock :If it is 1 not available , 0 the product is available",[withheld — see privacy notes],0,0.0,1,NUMERIC,CONSTANT: constant value 0 in every row
+shipping date (DateOrders),object,Exact date and time of shipment,2/3/2018 22:56,0,0.0,63701,DATETIME,POST-OUTCOME: only known after delivery — leakage risk as a predictive feature
+Shipping Mode,object,"The following shipping modes are presented : Standard Class , First Class , Second Class , Same Day",Standard Class,0,0.0,4,CATEGORICAL,

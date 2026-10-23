@@ -1,0 +1,54 @@
+feature,category,prediction_time_status,reason,cardinality,missing_percentage,relationship_observed,future_model_recommendation
+Late_delivery_risk,TARGET,N/A,The prediction target itself,2,0.0,N/A - is the target,EXCLUDE_TARGET
+Delivery Status,UNAVAILABLE / LEAKY,Post-outcome,Deterministic alternate encoding of the target,4,0.0,Perfectly determines target (0 exceptions),EXCLUDE_LEAKAGE
+Days for shipping (real),UNAVAILABLE / LEAKY,Post-outcome,"Actual shipping duration, only known after shipment",7,0.0,97.55% match with target via simple derived rule,EXCLUDE_LEAKAGE
+shipping date (DateOrders),UNAVAILABLE / LEAKY,Post-outcome,"Actual shipment date/time, only known after shipment",63701,0.0,Gap from order date mirrors 'Days for shipping (real)',EXCLUDE_LEAKAGE
+Days for shipment (scheduled),AVAILABLE,Order time,"Planned delivery window, set when order is placed",4,0.0,Mean 3.49 days (not late) vs 2.47 days (late) - meaningfully different,CONSIDER
+Shipping Mode,AVAILABLE,Order time,Chosen when order is placed,4,0.0,Late rate ranges 38.1% (Standard) to 95.3% (First Class),CONSIDER
+Type,AVAILABLE,Order time,Payment/transaction type set at order entry,4,0.0,Late rate ranges 48.5%-57.5% across 4 values - mild variation,CONSIDER
+order date (DateOrders),AVAILABLE,Order time,Basis for temporal features,65752,0.0,Derived year/month/day-of-week/hour rates all ~54-56% - flat,CONSIDER
+Order Item Quantity,AVAILABLE,Order time,Set when order line is created,5,0.0,Mean identical (2.13) between classes - no observed relationship,CONSIDER
+Order Item Product Price,AVAILABLE,Order time,Listed price at order time,75,0.0,Means nearly identical (141.6 vs 141.0) between classes,CONSIDER
+Order Item Discount,AVAILABLE,Order time,Applied at order time,1017,0.0,Means nearly identical (20.68 vs 20.65) between classes,CONSIDER
+Order Item Discount Rate,AVAILABLE,Order time,Applied at order time,18,0.0,Means nearly identical (0.102 vs 0.102) between classes,CONSIDER
+Order Item Total,AVAILABLE,Order time,Line total computed at order time,2927,0.0,Means nearly identical (183.6 vs 182.7) between classes,CONSIDER
+Sales,AVAILABLE,Order time,"Distinct value field, order-time",193,0.0,Means nearly identical (204.3 vs 203.3) between classes,CONSIDER
+Market,AVAILABLE,Order time,"Destination market group, known at order time",5,0.0,Late rate 54.6%-55.2% across 5 markets - flat,CONSIDER
+Order Region,AVAILABLE,Order time,"Destination region, known at order time",23,0.0,"Late rate 48.8%-58.0% across 23 regions - mostly flat, some small-sample regions",CONSIDER
+Order Country,AVAILABLE,Order time,"Destination country, known at order time; high cardinality (164)",164,0.0,Not separately charted - subset of Region/Market signal,REVIEW
+Order State,AVAILABLE,Order time,"Destination state; high cardinality (1,089)",1089,0.0,Not separately charted - recommend grouping before use,REVIEW
+Order City,AVAILABLE,Order time,"Destination city; very high cardinality (3,597)",3597,0.0,Not separately charted - overfitting risk if used raw,REVIEW
+Customer Segment,AVAILABLE,Order time,Consumer/Corporate/Home Office,3,0.0,Late rate 54.7%-55.1% across 3 segments - flat,CONSIDER
+Category Name,AVAILABLE,Order time,Product attribute,50,0.0,Not separately charted this milestone - candidate for Milestone 3,CONSIDER
+Department Name,AVAILABLE,Order time,Product/store attribute,11,0.0,Not separately charted this milestone - candidate for Milestone 3,CONSIDER
+Product Name,AVAILABLE,Order time,High cardinality (118) but tied 1:1 with Product Card Id / Category,118,0.0,Not separately charted - likely redundant with Category Name signal,REVIEW
+Benefit per order,UNCERTAIN,Not confirmed,Per-order profit; timing not confirmed independent of outcome,21998,0.0,Not analyzed against target this milestone pending timing confirmation,REVIEW
+Order Profit Per Order,UNCERTAIN / REDUNDANT,Not confirmed,100% identical to 'Benefit per order'; inherits same timing concern,21998,0.0,N/A - duplicate of Benefit per order,EXCLUDE_REDUNDANT
+Order Item Profit Ratio,UNCERTAIN,Not confirmed,Derived profit ratio; same timing concern as Benefit per order,162,0.0,Not analyzed against target this milestone pending timing confirmation,REVIEW
+Order Status,UNCERTAIN,Not confirmed,"Includes post-order states (PROCESSING, ON_HOLD, SUSPECTED_FRAUD, etc.)",9,0.0,Not analyzed against target this milestone - timing too uncertain,REVIEW
+Order Zipcode,LOW-INFORMATION,Order time (mostly absent),86.24% missing - too sparse to be reliable as-is,609,86.24,Not analyzed - insufficient coverage,REVIEW
+Category Id,LOW-INFORMATION,Order time,Raw identifier; Category Name carries same info usably,51,0.0,N/A - identifier,EXCLUDE_IDENTIFIER
+Department Id,LOW-INFORMATION,Order time,Raw identifier; Department Name carries same info usably,11,0.0,N/A - identifier,EXCLUDE_IDENTIFIER
+Product Card Id,LOW-INFORMATION,Order time,Raw identifier; Product/Category Name carry same info usably,118,0.0,N/A - identifier,EXCLUDE_IDENTIFIER
+Customer Id,LOW-INFORMATION,Order time,"Raw identifier, 20,652 unique values, no generalizable pattern",20652,0.0,N/A - identifier,EXCLUDE_IDENTIFIER
+Order Id,LOW-INFORMATION,Order time,"Raw identifier, 65,752 unique values",65752,0.0,N/A - identifier,EXCLUDE_IDENTIFIER
+Order Item Id,LOW-INFORMATION,Order time,"Raw identifier, 100% unique (row-level)",180519,0.0,N/A - identifier,EXCLUDE_IDENTIFIER
+Order Customer Id,REDUNDANT,N/A,100% identical to Customer Id,20652,0.0,N/A - duplicate,EXCLUDE_REDUNDANT
+Product Category Id,REDUNDANT,N/A,100% identical to Category Id,51,0.0,N/A - duplicate,EXCLUDE_REDUNDANT
+Order Item Cardprod Id,REDUNDANT,N/A,100% identical to Product Card Id,118,0.0,N/A - duplicate,EXCLUDE_REDUNDANT
+Sales per customer,REDUNDANT,N/A,100% identical to Order Item Total,2927,0.0,N/A - duplicate,EXCLUDE_REDUNDANT
+Product Price,REDUNDANT,N/A,100% identical to Order Item Product Price,75,0.0,N/A - duplicate,EXCLUDE_REDUNDANT
+Product Description,LOW-INFORMATION,N/A,100% missing - no observed values,0,100.0,N/A - empty,EXCLUDE_CONSTANT
+Product Image,LOW-INFORMATION,N/A,"A URL string, not a predictive attribute",118,0.0,N/A - not a feature,EXCLUDE_CONSTANT
+Product Status,LOW-INFORMATION,N/A,"Constant (0) across all 180,519 rows",1,0.0,N/A - constant,EXCLUDE_CONSTANT
+Customer Fname,PRIVACY-EXCLUDED,N/A,Direct personal information (customer name),782,0.0,Not analyzed - excluded on principle,EXCLUDE_PRIVACY
+Customer Lname,PRIVACY-EXCLUDED,N/A,Direct personal information (customer name),1109,0.004,Not analyzed - excluded on principle,EXCLUDE_PRIVACY
+Customer Email,PRIVACY-EXCLUDED,N/A,"Masked/constant here, but a personal field by nature",1,0.0,Constant placeholder - no signal even if retained,EXCLUDE_PRIVACY
+Customer Password,PRIVACY-EXCLUDED,N/A,"Masked/constant here, but a personal field by nature",1,0.0,Constant placeholder - no signal even if retained,EXCLUDE_PRIVACY
+Customer City,PRIVACY-EXCLUDED,N/A,Ambiguous documentation (customer vs store) + high cardinality (563),563,0.0,Not analyzed - excluded pending clarification,EXCLUDE_PRIVACY
+Customer State,PRIVACY-EXCLUDED,N/A,Documented as store location but cardinality (46) doesn't rule out personal linkage,46,0.0,Not analyzed - excluded pending clarification,EXCLUDE_PRIVACY
+Customer Street,PRIVACY-EXCLUDED,N/A,"7,458 unique values contradicts 'store location' documentation",7458,0.0,Not analyzed - excluded pending clarification,EXCLUDE_PRIVACY
+Customer Zipcode,PRIVACY-EXCLUDED,N/A,Ambiguous documentation + moderate-high cardinality (995),995,0.002,Not analyzed - excluded pending clarification,EXCLUDE_PRIVACY
+Customer Country,PRIVACY-EXCLUDED,N/A,Ambiguous documentation (customer vs store),2,0.0,Only 2 unique values - low information even if retained,EXCLUDE_PRIVACY
+Latitude,PRIVACY-EXCLUDED,N/A,"11,250 unique values contradicts 'store location' documentation",11250,0.0,Not analyzed - excluded pending clarification,EXCLUDE_PRIVACY
+Longitude,PRIVACY-EXCLUDED,N/A,"4,487 unique values contradicts 'store location' documentation",4487,0.0,Not analyzed - excluded pending clarification,EXCLUDE_PRIVACY

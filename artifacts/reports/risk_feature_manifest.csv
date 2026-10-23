@@ -1,0 +1,54 @@
+feature,included,reason,source,prediction_time_available,transformation,privacy_status,leakage_status
+Late_delivery_risk,False,"This IS the target, not a feature",DataCo,N/A,N/A (target),ordinary,TARGET
+Delivery Status,False,Deterministic alternate encoding of the target,DataCo,No,excluded,ordinary,HIGH - alternate target encoding
+Days for shipping (real),False,"Actual shipping duration, only known post-shipment; 97.55% match with target",DataCo,No,excluded,ordinary,HIGH - post-outcome
+shipping date (DateOrders),False,"Actual shipment date, only known post-shipment",DataCo,No,excluded,ordinary,HIGH - post-outcome
+Shipping Mode,True,PRIMARY shipping-plan feature — chosen at order time; strongest observed signal in Milestone 2 (38.1%-95.3% late rate range),DataCo,Yes,OneHotEncoder,ordinary,LOW
+Days for shipment (scheduled),False,Perfectly collinear with Shipping Mode (Milestone 2 finding) — excluded to avoid pretending two collinear columns are independent signals; Shipping Mode retained as the more interpretable representation,DataCo,Yes,excluded (collinear with Shipping Mode),ordinary,"LOW (excluded for redundancy, not leakage)"
+Type,True,"Payment/transaction type, set at order entry; mild observed variation (48.5%-57.5%)",DataCo,Yes,OneHotEncoder,ordinary,LOW
+Market,True,"Destination market, known at order time; coarse (5 categories), stable sample sizes",DataCo,Yes,OneHotEncoder,ordinary,LOW
+Order Region,False,Hierarchical subset of Market (each region maps to exactly 1 market) plus higher cardinality (23) and some small-sample categories — Market retained as the more stable representation,DataCo,Yes,excluded (redundant with Market),ordinary,"LOW (excluded for redundancy, not leakage)"
+Customer Segment,True,"Consumer/Corporate/Home Office, known at order time",DataCo,Yes,OneHotEncoder,ordinary,LOW
+Category Name,True,"Product category, known at order time; not a strict duplicate of Department Name (one category can map to 2 departments)",DataCo,Yes,OneHotEncoder,ordinary,LOW
+Department Name,True,"Product/store department, known at order time; adds information beyond Category Name",DataCo,Yes,OneHotEncoder,ordinary,LOW
+Order Item Quantity,True,"Set at order time; no observed relationship with target in Milestone 2 but retained as a legitimate, non-redundant numeric input",DataCo,Yes,StandardScaler,ordinary,LOW
+Order Item Product Price,True,Listed price at order time; kept as the base price figure,DataCo,Yes,StandardScaler,ordinary,LOW
+Order Item Discount Rate,True,Discount percentage applied at order time; using the RATE (not the absolute discount) avoids redundancy with price*quantity,DataCo,Yes,StandardScaler,ordinary,LOW
+Order Item Discount,False,"Absolute discount amount, arithmetically ~ Sales - Order Item Total; redundant with Price x Quantity x Discount Rate already in the feature set",DataCo,Yes,"excluded (redundant, arithmetic combination of retained fields)",ordinary,"LOW (excluded for redundancy, not leakage)"
+Sales,False,Arithmetically ~ Order Item Quantity x Order Item Product Price (97.1% exact match) — redundant with retained numeric fields,DataCo,Yes,excluded (redundant),ordinary,"LOW (excluded for redundancy, not leakage)"
+Order Item Total,False,Arithmetically ~ Sales - Order Item Discount (98.3% match) — redundant with retained numeric fields,DataCo,Yes,excluded (redundant),ordinary,"LOW (excluded for redundancy, not leakage)"
+Sales per customer,False,"100% identical to Order Item Total, which is itself excluded as redundant",DataCo,N/A,excluded (duplicate),ordinary,LOW (redundant)
+Product Price,False,100% identical to Order Item Product Price (already retained under that name),DataCo,N/A,excluded (duplicate),ordinary,LOW (redundant)
+order date (DateOrders),False,"Used to construct the chronological train/test split, not as a model feature this milestone (no observed temporal relationship with target in Milestone 2)",DataCo,Yes,"used for split only, not encoded as a feature",ordinary,LOW
+Order Status,False,UNCERTAIN operational timing (includes post-order states); operational timing not established -> excluded per Milestone 3 conservative-resolution rule,DataCo,Uncertain,excluded,ordinary,MEDIUM (uncertain timing)
+Benefit per order,False,"UNCERTAIN operational timing, not confirmed independent of delivery outcome -> excluded per Milestone 3 conservative-resolution rule",DataCo,Uncertain,excluded,ordinary,MEDIUM (uncertain timing)
+Order Profit Per Order,False,"100% identical to Benefit per order, which is itself excluded",DataCo,Uncertain,excluded (duplicate + uncertain),ordinary,MEDIUM (uncertain timing)
+Order Item Profit Ratio,False,Same uncertain-timing concern as Benefit per order -> excluded per Milestone 3 conservative-resolution rule,DataCo,Uncertain,excluded,ordinary,MEDIUM (uncertain timing)
+Order Zipcode,False,86.24% missing — insufficient coverage to be a reliable feature,DataCo,Yes (sparse),excluded,ordinary,"LOW (excluded for missingness, not leakage)"
+Order Country,False,High cardinality (164) with signal already captured more stably via Market; not tested in Milestone 2,DataCo,Yes,excluded,ordinary,"LOW (excluded, not tested)"
+Order State,False,"Very high cardinality (1,089); not tested in Milestone 2, overfitting risk",DataCo,Yes,excluded,ordinary,"LOW (excluded, not tested)"
+Order City,False,"Very high cardinality (3,597); not tested in Milestone 2, overfitting risk",DataCo,Yes,excluded,ordinary,"LOW (excluded, not tested)"
+Product Name,False,"High cardinality (118), largely redundant with Category Name/Department Name already retained",DataCo,Yes,excluded (redundant),ordinary,LOW
+Category Id,False,Raw identifier — Category Name (retained) carries the same information usably,DataCo,Yes,excluded (identifier),ordinary,LOW
+Department Id,False,Raw identifier — Department Name (retained) carries the same information usably,DataCo,Yes,excluded (identifier),ordinary,LOW
+Product Card Id,False,"Raw identifier, no generalizable signal",DataCo,Yes,excluded (identifier),ordinary,LOW
+Customer Id,False,"Raw identifier, 20,652 unique values, no generalizable signal",DataCo,Yes,excluded (identifier),ordinary,LOW
+Order Id,False,"Raw identifier, 65,752 unique values",DataCo,Yes,excluded (identifier),ordinary,LOW
+Order Item Id,False,"Raw identifier, 100% unique (row-level)",DataCo,Yes,excluded (identifier),ordinary,LOW
+Order Customer Id,False,"100% identical to Customer Id, itself excluded",DataCo,N/A,excluded (duplicate),ordinary,LOW
+Product Category Id,False,"100% identical to Category Id, itself excluded",DataCo,N/A,excluded (duplicate),ordinary,LOW
+Order Item Cardprod Id,False,"100% identical to Product Card Id, itself excluded",DataCo,N/A,excluded (duplicate),ordinary,LOW
+Product Description,False,100% missing — no observed values,DataCo,N/A,excluded (empty),ordinary,LOW
+Product Image,False,"A URL string, not a predictive attribute",DataCo,N/A,excluded (not a feature),ordinary,LOW
+Product Status,False,"Constant across all 180,519 rows",DataCo,N/A,excluded (constant),ordinary,LOW
+Customer Fname,False,Direct personal information (customer name),DataCo,Yes,excluded (privacy),DIRECT_PII,N/A
+Customer Lname,False,Direct personal information (customer name),DataCo,Yes,excluded (privacy),DIRECT_PII,N/A
+Customer Email,False,"Masked/constant here, but a personal field by nature",DataCo,Yes,excluded (privacy),MASKED_CONSTANT,N/A
+Customer Password,False,"Masked/constant here, but a personal field by nature",DataCo,Yes,excluded (privacy),MASKED_CONSTANT,N/A
+Customer City,False,Ambiguous documentation (customer vs store) + high cardinality contradicts 'store' reading,DataCo,Yes,excluded (privacy),QUASI_IDENTIFIER,N/A
+Customer State,False,Ambiguous documentation (customer vs store),DataCo,Yes,excluded (privacy),QUASI_IDENTIFIER,N/A
+Customer Street,False,"7,458 unique values contradicts 'store location' documentation — treated as personal address-like data",DataCo,Yes,excluded (privacy),DIRECT_PII,N/A
+Customer Zipcode,False,Ambiguous documentation + moderate-high cardinality,DataCo,Yes,excluded (privacy),QUASI_IDENTIFIER,N/A
+Customer Country,False,Ambiguous documentation (customer vs store),DataCo,Yes,excluded (privacy),QUASI_IDENTIFIER,N/A
+Latitude,False,"11,250 unique values contradicts 'store location' documentation",DataCo,Yes,excluded (privacy),QUASI_IDENTIFIER,N/A
+Longitude,False,"4,487 unique values contradicts 'store location' documentation",DataCo,Yes,excluded (privacy),QUASI_IDENTIFIER,N/A

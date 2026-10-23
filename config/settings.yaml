@@ -1,0 +1,25 @@
+# ASTRA project configuration.
+# Code should read values from here (via src/utils/config.py), not hardcode
+# paths or constants directly in modules — this is what "configuration
+# rather than hardcoding" means in the coding standards.
+
+project:
+  name: ASTRA
+  stage: 1
+
+paths:
+  data_raw: data/raw
+  data_interim: data/interim
+  data_processed: data/processed
+  data_external: data/external
+  models: models
+  artifacts_figures: artifacts/figures
+  artifacts_metrics: artifacts/metrics
+  artifacts_reports: artifacts/reports
+  logs: logs
+
+logging:
+  level: INFO
+  log_file: logs/astra.log
+
+random_seed: 42
